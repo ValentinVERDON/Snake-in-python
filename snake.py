@@ -12,7 +12,7 @@ class Apple:
         self.rect_size = 10
         self.apple_position_x, self.apple_position_y = self.random_position()
 
-    # Coordonées aléatoire de la pomme 
+    # Random apple coordinates  
     def random_position(self):
         self.apple_x = random.randint(self.rect_x, self.rect_x + self.rect_width - self.rect_size)
         self.apple_y = random.randint(self.rect_y, self.rect_y + self.rect_height - self.rect_size)
@@ -21,10 +21,11 @@ class Apple:
         self.apple_y = (self.apple_y // self.rect_size) * self.rect_size
         return self.apple_x, self.apple_y
 
-    # Update la position de la pomme
+    # Update apple position
     def update_position(self):
         self.apple_position_x, self.apple_position_y = self.random_position()
 
+    # Apple display
     def draw_apple(self):
         apple_radius = self.rect_size // 2  # Calculating radius of the circle
         apple_center = (self.apple_position_x + apple_radius, self.apple_position_y + apple_radius)  # Center of the circle
@@ -40,15 +41,16 @@ class SnakePlayer:
         self.rect_height = rect_height
         self.border_color = (0, 128, 0)
         self.rect_size = 10
-        self.player_position_x, self.player_position_y = self.random_position_init()
+        self.player_position_x, self.player_position_y = self.random_position_init() 
         self.segments = [{
-            "x": self.player_position_x,
-            "y": self.player_position_y
+            "x": self.player_position_x, # x coordonate of a segment 
+            "y": self.player_position_y  # y coordonate of a segment
         }]
-        self.direction = None  # Direction initially set to None (immobile)
+        self.direction = None  # Initial direction None to stand still
         self.score = 0
         self.speed = 10
 
+    # Random coordinates of the first segment at the start of a game
     def random_position_init(self):
         self.player_x = random.randint(self.rect_x, self.rect_x + self.rect_width - self.rect_size)
         self.player_y = random.randint(self.rect_y, self.rect_y + self.rect_height - self.rect_size)
@@ -57,10 +59,12 @@ class SnakePlayer:
         self.player_y = (self.player_y // self.rect_size) * self.rect_size
         return self.player_x, self.player_y
 
+    # Display the player
     def draw_player(self):
         for segment in self.segments:
             pygame.draw.rect(self.screen, self.border_color, pygame.Rect(segment["x"], segment["y"], self.rect_size, self.rect_size))
     
+    # Handle the keys
     def handle_keys(self):
         keys = pygame.key.get_pressed()
         new_direction = self.direction
@@ -77,6 +81,7 @@ class SnakePlayer:
         if new_direction != self.direction:
             self.direction = new_direction
 
+    # Move the player
     def move_player(self):
         if self.direction is None:
             return
@@ -96,6 +101,7 @@ class SnakePlayer:
         elif self.direction == "DOWN":
             self.segments[0]["y"] += self.rect_size
 
+    # Add a new segment to the player
     def grow(self):
         last_segment = self.segments[-1]
         new_segment = {
@@ -117,6 +123,7 @@ class Jeu:
 
         self.font = pygame.font.Font(None, 24)  # Initialize font with smaller size
 
+    #  Game Rules
     def check_collision(self):
         # Check collision with walls
         if (self.player.segments[0]["x"] < self.rect_x or 
@@ -140,6 +147,7 @@ class Jeu:
             self.player.speed += 2  # Increment speed by 2
             print(f"Score: {self.player.score}, Speed: {self.player.speed}")
 
+    # Draw the game
     def draw(self):
         self.screen.fill((0, 0, 0))
         pygame.draw.rect(self.screen, (255, 255, 255), pygame.Rect(self.rect_x, self.rect_y, self.rect_width, self.rect_height), 1)
@@ -157,6 +165,7 @@ class Jeu:
 
         pygame.display.flip()
 
+    # Run the game
     def run_game(self):
         running = True
         clock = pygame.time.Clock()
