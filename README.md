@@ -1,1 +1,1 @@
-﻿# Snake-in-python v1.1
+﻿# Snake-in-python using Pygame
